@@ -1,7 +1,7 @@
 require 'ruble'
 
 command 'Documentation for Selection (Drupal 7)' do |cmd|
-   cmd.key_binding = 'CONTROL+H'
+  cmd.key_binding = 'CONTROL+H'
   cmd.scope = 'source.php'
   cmd.output = :show_as_html
   cmd.input = :selection, :word

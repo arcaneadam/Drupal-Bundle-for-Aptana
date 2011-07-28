@@ -1,0 +1,6 @@
+name = ${moduleName}
+description = "${moduleDesc}"
+package = "${modulePack}"
+core = ${core}
+
+${dependencies}

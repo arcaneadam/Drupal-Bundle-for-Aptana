@@ -614,6 +614,9 @@ END
       thememenu.command 'theme_vertical_tabs'
     end
   end
+  main_menu.command 'Form' do |submenu|
+    
+  end
   main_menu.command 'Documentation for Selection (Drupal 7)'
   end
 end
