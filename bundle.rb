@@ -7,7 +7,6 @@ bundle 'Drupal 7' do |bundle|
 Development support for <a href="http://drupal.org/">Drupal</a>.
 The Aptana Drupal project page can be found at <a href="http://drupal.org/project/aptana_drupal_bundle">Aptana Drupal Bundle</a>
 END
-  
   bundle.menu 'Drupal' do |main_menu|
   main_menu.menu 'Hooks' do |submenu|
     submenu.menu 'Custom' do |custom|
@@ -614,8 +613,11 @@ END
       thememenu.command 'theme_vertical_tabs'
     end
   end
-  main_menu.command 'Form' do |submenu|
+  main_menu.menu 'Form' do |form|
     
+  end
+  main_menu.menu 'Drush' do |drush|
+    drush.command 'Execute PHP'
   end
   main_menu.command 'Documentation for Selection (Drupal 7)'
   end

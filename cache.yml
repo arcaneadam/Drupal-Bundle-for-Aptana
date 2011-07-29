@@ -1,19 +1,6 @@
 !!com.aptana.scripting.model.BundleElement
 author: Jamie Holly/HollyIT, Adam Gregory/Newhall Interactive
 children:
-- !!com.aptana.scripting.model.CommandElement
-  async: false
-  customProperties: null
-  displayName: Form
-  input: []
-  inputPath: null
-  keyBindingMap: null
-  outputPath: null
-  outputType: undefined
-  path: bundle.rb
-  runType: current_thread
-  scope: null
-  workingDirectoryType: UNDEFINED
 - !!com.aptana.scripting.model.MenuElement
   children:
   - children:
@@ -3364,6 +3351,18 @@ children:
     displayName: Form
     path: bundle.rb
     scope: null
+  - children:
+    - children: *id001
+      commandName: Execute PHP
+      customProperties: null
+      displayName: Execute PHP
+      path: bundle.rb
+      scope: null
+    commandName: Drush
+    customProperties: null
+    displayName: Drush
+    path: bundle.rb
+    scope: null
   - children: *id001
     commandName: Documentation for Selection (Drupal 7)
     customProperties: null
@@ -3403,6 +3402,19 @@ children:
   runType: current_thread
   scope: source.php
   workingDirectoryType: UNDEFINED
+- !!com.aptana.scripting.model.CommandElement
+  async: false
+  customProperties: null
+  displayName: Execute PHP
+  input: [none]
+  inputPath: null
+  keyBindingMap: null
+  outputPath: /Users/adam/Documents/Aptana Rubles/drupal.ruble/:discard
+  outputType: output_to_file
+  path: commands/drush.rb
+  runType: current_thread
+  scope: null
+  workingDirectoryType: CURRENT_PROJECT
 - !!com.aptana.scripting.model.CommandElement
   async: false
   customProperties:
