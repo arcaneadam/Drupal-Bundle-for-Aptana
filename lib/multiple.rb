@@ -76,12 +76,6 @@ module RubleM
         def getInputTextStyle
           org.eclipse.swt.SWT::MULTI | org.eclipse.swt.SWT::BORDER | org.eclipse.swt.SWT::V_SCROLL
         end
-        def createDialogArea(parent)
-          grid = org.eclipse.swt.layout.GridData
-          composite = grid.new()
-          composite.heightHint = 100
-          return composite
-        end
       end
       
       private

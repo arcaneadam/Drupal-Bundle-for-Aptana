@@ -622,3 +622,14 @@ END
   main_menu.command 'Documentation for Selection (Drupal 7)'
   end
 end
+
+
+command "Show Save Information" do |cmd|
+  cmd.input = :none
+  cmd.output = :discard
+  cmd.trigger = :execution_listener
+
+  cmd.invoke do |ctx|
+    ctx.execution_listener.each {|k,v| CONSOLE.puts "Execution: #{k}=#{v}"}
+  end
+end

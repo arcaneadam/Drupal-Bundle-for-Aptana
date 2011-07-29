@@ -3376,6 +3376,20 @@ children:
   scope: null
 - !!com.aptana.scripting.model.CommandElement
   async: false
+  customProperties:
+    execution_listener_values: []
+  displayName: Show Save Information
+  input: [none]
+  inputPath: null
+  keyBindingMap: null
+  outputPath: null
+  outputType: discard
+  path: bundle.rb
+  runType: current_thread
+  scope: null
+  workingDirectoryType: UNDEFINED
+- !!com.aptana.scripting.model.CommandElement
+  async: false
   customProperties: null
   displayName: Documentation for Selection (Drupal 7)
   input: [selection, word]
