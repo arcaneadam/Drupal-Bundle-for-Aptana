@@ -1,4 +1,6 @@
-# p001hello.rb  
+# p001hello.rb 
+require 'ruble'
+
 def find_module_name(dir)
 
   while File.exists?(dir)
@@ -363,4 +365,23 @@ def hooks_list()
     'xmlrpc_alter'
   ]
   return hooks
+end
+
+def scan_sites_dir(dir)
+  sites = []
+  sites_dir = dir + '/sites'
+  x = 0
+  if File.exists?(sites_dir)
+    contains = Dir.new(sites_dir).entries
+    for i in contains
+      if i != '.' || i != '..'
+        settings = sites_dir + '/' + i + '/settings.php'
+        if File.exists?(settings)
+          sites[x] = i
+          x += 1
+        end
+      end
+    end
+  end
+  return sites
 end

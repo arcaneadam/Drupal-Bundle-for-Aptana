@@ -51,6 +51,33 @@ module RubleM
         end
       end
       
+      # common to request_string, request_secure_string
+      def request_string_multi(options = Hash.new,&block)
+        params = default_buttons(options)
+        params["title"] = options[:title] || "Enter Text"
+        params["prompt"] = options[:prompt] || ""
+        params["string"] = options[:default] || ""
+
+        klass = MultiInputDialog
+        # FIXME Need to support button\d options and build buttons dynamically!
+        dialog = klass.new(shell, params["title"], params["prompt"], params["string"], nil)
+        return_value = nil
+        return_value = dialog.value if dialog.open == org.eclipse.jface.window.Window::OK
+        
+        if return_value == nil
+          block_given? ? raise(SystemExit) : nil
+        else
+          block_given? ? yield(return_value) : return_value
+        end
+      end
+      
+      # Used to request a Multi Dialog
+      class MultiInputDialog < org.eclipse.jface.dialogs.InputDialog
+        def getInputTextStyle
+          org.eclipse.swt.SWT::MULTI | org.eclipse.swt.SWT::BORDER | org.eclipse.swt.SWT::V_SCROLL
+        end
+      end
+      
       private
       
       def default_buttons(user_options = Hash.new)
