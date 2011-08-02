@@ -1,6 +1,5 @@
 require 'java'
 
-
 java_import org.eclipse.jface.wizard.WizardPage
 java_import org.eclipse.swt.SWT
 java_import org.eclipse.swt.layout.GridData
@@ -10,13 +9,35 @@ java_import org.eclipse.swt.widgets.Label
 java_import org.eclipse.swt.widgets.Text
 
 module DrushSettingForm
+  
+  # A class to make it easy to generate UIJobs. Takes a block which is 
+  # then called as the body of runInUIThread
+  class UIJob < org.eclipse.ui.progress.UIJob
+    def initialize(name, &blk)
+      super(name)
+      @block = blk
+    end
+    
+    def runInUIThread(monitor)
+      @block.call(monitor)
+      return org.eclipse.core.runtime.Status::OK_STATUS
+    end
+  end
+  
   module UI
     class << self
-      def testpage(pagename)
+      def testpage()
         wizard = CaptureEmployeeInfomrationWizard
         dialog = org.eclipse.jface.wizard.WizardDialog.new(shell, wizard.new())
         dialog.create()
-        dialog.open()
+        return_value = nil
+        return_value = dialog.value if dialog.open == org.eclipse.jface.window.Window::OK
+        
+        if return_value == nil
+          block_given? ? raise(SystemExit) : nil
+        else
+          block_given? ? yield(return_value) : return_value
+        end
       end
 
       private

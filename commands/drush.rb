@@ -14,7 +14,7 @@ with_defaults :input => :none, :output => :output_to_console, :working_directory
     cmd.key_binding = "CONTROL+D"
     cmd.output = ':discard'
     cmd.invoke do |context|
-      DrushSettingForm::UI.testpage('test')
+      DrushSettingForm::UI.testpage()
       return nil
       drush = drush_init()
       if !drush
