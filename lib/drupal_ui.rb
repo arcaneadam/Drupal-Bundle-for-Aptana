@@ -1,6 +1,6 @@
 require "java"
 
-module RubleM
+module DrupalUI
   
   # A class to make it easy to generate UIJobs. Takes a block which is 
   # then called as the body of runInUIThread
@@ -75,6 +75,11 @@ module RubleM
       class MultiInputDialog < org.eclipse.jface.dialogs.InputDialog
         def getInputTextStyle
           org.eclipse.swt.SWT::MULTI | org.eclipse.swt.SWT::BORDER | org.eclipse.swt.SWT::V_SCROLL
+        end
+        def createDialogArea(parent)
+          control = super(parent)
+          getText.getLayoutData.heightHint = 100;
+          control
         end
       end
       

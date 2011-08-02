@@ -1,6 +1,6 @@
 require 'ruble'
 require 'functions.rb'
-require 'multiple.rb'
+require 'drupal_ui.rb'
 
 Ruble::Logger.log_level = :trace
 
@@ -12,7 +12,7 @@ template "Module Template" do |t|
     items = hooks_list()
     options[:items] = items
     options[:title] = "Select Hooks to Include"
-    chosen = RubleM::UI.request_items(options)
+    chosen = DrupalUI::UI.request_items(options)
     hooks = ''
     moduleName = ENV['TM_NEW_FILE_BASENAME']
     chosen.each do |hook|
@@ -44,7 +44,7 @@ template "Install Template" do |t|
     items = ['install', 'uninstall', 'schema']
     options[:items] = items
     options[:title] = "Select Hooks to Include"
-    chosen = RubleM::UI.request_items(options)
+    chosen = DrupalUI::UI.request_items(options)
     hooks = ''
     moduleName = ENV['TM_NEW_FILE_BASENAME']
     chosen.each do |hook|

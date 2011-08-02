@@ -4566,6 +4566,9 @@ command 'hook_CUSTOM' do |cmd|
     options[:title] = "Hook Name"
     options[:prompt] = "What is the hook name?"
     hook = Ruble::UI.request_string(options)
+    if !hook || hook.empty?
+      return nil
+    end
     func = moduleName + '_' + hook
      "
 /**
