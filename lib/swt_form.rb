@@ -1,4 +1,5 @@
 require 'java'
+require 'ruble'
 
 java_import org.eclipse.jface.wizard.WizardPage
 java_import org.eclipse.swt.SWT
@@ -9,7 +10,7 @@ java_import org.eclipse.swt.widgets.Label
 java_import org.eclipse.swt.widgets.Text
 
 module DrushSettingForm
-  
+  @dialog
   # A class to make it easy to generate UIJobs. Takes a block which is 
   # then called as the body of runInUIThread
   class UIJob < org.eclipse.ui.progress.UIJob
@@ -28,16 +29,9 @@ module DrushSettingForm
     class << self
       def testpage()
         wizard = CaptureEmployeeInfomrationWizard
-        dialog = org.eclipse.jface.wizard.WizardDialog.new(shell, wizard.new())
-        dialog.create()
-        return_value = nil
-        return_value = dialog.value if dialog.open == org.eclipse.jface.window.Window::OK
-        
-        if return_value == nil
-          block_given? ? raise(SystemExit) : nil
-        else
-          block_given? ? yield(return_value) : return_value
-        end
+        @dialog = org.eclipse.jface.wizard.WizardDialog.new(shell, wizard.new())
+        @dialog.create()
+        @dialog.open()
       end
 
       private
@@ -83,16 +77,24 @@ module DrushSettingForm
       org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("Last Name")
       @secondNameText = org.eclipse.swt.widgets.Text.new(composite, org.eclipse.swt.SWT::NONE)
     end
+    def getfirst
+      @firstNameText.getText()
+    end
+    def getlast
+      @secondNameText.getText()
+    end
   end
 
   class CaptureEmployeeInfomrationWizard < org.eclipse.jface.wizard.Wizard
+    @personalInfoPage
     def addPages()
-      personalInfoPage = PersonalInformationPage.new("Personal Information Page");
-      addPage(personalInfoPage)
+      @personalInfoPage = PersonalInformationPage.new("Personal Information Page");
+      addPage(@personalInfoPage)
     end
 
     def performFinish()
-      return false
+      CONSOLE.puts @personalInfoPage.getfirst
+      return true
     end
   end
 end
