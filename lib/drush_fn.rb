@@ -40,8 +40,9 @@ def drush_get_yaml(bundle = nil)
 end
 
 def drush_init()
+  drush = Hash.new
   drush = drush_get_yaml(1)
-  if !drush[:path] || drush[:path].empty?
+  if !drush['path'] || drush['path'].empty?
     path_opt = {}
     path_opt[:title] = "Please set the path to your Drush instance"
     path_opt[:only_directories] = TRUE
@@ -52,7 +53,7 @@ def drush_init()
       msg = "You must select a valid Drush location in order to run Drush commands"
       alert = Ruble::UI.alert(:error, "Drush path needed in order to run Drush commands", msg)
     else
-      drush[:path] = path
+      drush['path'] = path
       drush_write_yaml(drush, 1)
     end
   end
@@ -72,12 +73,12 @@ def drush_init()
   end
   project_hash = ENV['TM_PROJECT_NAME'].hash
   drush[project_hash] = {}
-  drush[project_hash][:site] = site
+  drush[project_hash]['path'] = site
   drush_write_yaml(drush)
   return drush
 end
 
 def drush_exec(drush, cmd)
-  drex = drush[:path] + '/drush'
+  drex = drush['path'] + '/drush'
   out = ``
 end

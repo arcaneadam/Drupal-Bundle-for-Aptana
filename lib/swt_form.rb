@@ -27,11 +27,20 @@ module DrushSettingForm
   
   module UI
     class << self
-      def testpage()
-        wizard = CaptureEmployeeInfomrationWizard
-        @dialog = org.eclipse.jface.wizard.WizardDialog.new(shell, wizard.new())
+      def settingsPage(settings = Hash.new)
+        wizard = DrushSiteSettings.new
+        wizard.setDefaults(settings)
+        wizard.setHelpAvailable(false)
+        @dialog = DrushSiteSettingsDialog.new(shell, wizard)
         @dialog.create()
-        @dialog.open()
+        return_value = nil
+        return_value = @dialog.value if @dialog.open == org.eclipse.jface.window.Window::OK
+
+        if return_value == nil then
+          block_given? ? raise(SystemExit) : nil
+        else
+          block_given? ? yield(return_value) : return_value
+        end
       end
 
       private
@@ -57,44 +66,76 @@ module DrushSettingForm
     end
   end
 
-  class PersonalInformationPage < org.eclipse.jface.wizard.WizardPage
-    @firstNameText
-    @secondNameText
+  class SiteSettingsPage < org.eclipse.jface.wizard.WizardPage
+    @drushPath
+    @alwaysYes
+    @defaults
     def initialize(pageName)
       super(pageName)
-      setTitle("Personal Information")
-      setDescription("Please enter your personal information")
+      setTitle("Drush Project Settings")
+      setDescription("Drush settings for the current Project")
     end
-
+    def setDefaults(defaults)
+      @defaults = defaults
+    end
     def createControl(parent)
       composite = org.eclipse.swt.widgets.Composite.new(parent, org.eclipse.swt.SWT::NONE)
       layout = org.eclipse.swt.layout.GridLayout.new()
       layout.numColumns = 2
       composite.setLayout(layout)
       setControl(composite)
-      org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("First Name")
-      @firstNameText = org.eclipse.swt.widgets.Text.new(composite, org.eclipse.swt.SWT::NONE)
-      org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("Last Name")
-      @secondNameText = org.eclipse.swt.widgets.Text.new(composite, org.eclipse.swt.SWT::NONE)
+      org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("Path to Drush")
+      @drushPath = org.eclipse.swt.widgets.Text.new(composite, org.eclipse.swt.SWT::SINGLE)
+      @alwyasYes = org.eclipse.swt.widgets.Button.new(composite, org.eclipse.swt.SWT::CHECK).setText("Always answer yes");
+      org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("(Passes Drush the argument '-y')")
     end
-    def getfirst
-      @firstNameText.getText()
+    def getDrushPath
+      @drushPath.getText()
     end
-    def getlast
-      @secondNameText.getText()
+    def getYes
+      @alwaysYes.getSelection()
     end
   end
 
-  class CaptureEmployeeInfomrationWizard < org.eclipse.jface.wizard.Wizard
-    @personalInfoPage
-    def addPages()
-      @personalInfoPage = PersonalInformationPage.new("Personal Information Page");
-      addPage(@personalInfoPage)
+  class DrushSiteSettings < org.eclipse.jface.wizard.Wizard
+    @settingsPage
+    @data
+    @defaults
+    def initialize()
+      @data = Hash.new
     end
-
+    def addPages()
+      @settingsPage = SiteSettingsPage.new("Site Settings");
+      @settingsPage.setDefaults(@defaults)
+      addPage(@settingsPage)
+    end
     def performFinish()
-      CONSOLE.puts @personalInfoPage.getfirst
       return true
+    end
+    def saveResults()
+      setData('path', @settingsPage.getDrushPath)
+      setData('y', @settingsPage.getYes)
+    end
+    def setDefaults(defaults)
+      @defaults = defaults
+    end
+    def setData(key, value)
+      @data[key] = value
+    end
+    def getData
+      saveResults()
+      @data
+    end
+  end
+  
+  class DrushSiteSettingsDialog < org.eclipse.jface.wizard.WizardDialog
+    @data
+    def finishPressed
+      @data = getWizard.getData()
+      super()
+    end
+    def value
+      @data
     end
   end
 end
