@@ -30,7 +30,6 @@ module DrushSettingForm
       def settingsPage(settings = Hash.new)
         wizard = DrushSiteSettings.new
         wizard.setDefaults(settings)
-        wizard.setHelpAvailable(false)
         @dialog = DrushSiteSettingsDialog.new(shell, wizard)
         @dialog.create()
         return_value = nil
@@ -83,11 +82,12 @@ module DrushSettingForm
       layout = org.eclipse.swt.layout.GridLayout.new()
       layout.numColumns = 2
       composite.setLayout(layout)
-      setControl(composite)
       org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("Path to Drush")
       @drushPath = org.eclipse.swt.widgets.Text.new(composite, org.eclipse.swt.SWT::SINGLE)
-      @alwyasYes = org.eclipse.swt.widgets.Button.new(composite, org.eclipse.swt.SWT::CHECK).setText("Always answer yes");
+      @alwaysYes = org.eclipse.swt.widgets.Button.new(composite, org.eclipse.swt.SWT::CHECK)
+      @alwaysYes.setText("Always answer yes")
       org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE).setText("(Passes Drush the argument '-y')")
+      setControl(composite)
     end
     def getDrushPath
       @drushPath.getText()
@@ -99,43 +99,30 @@ module DrushSettingForm
 
   class DrushSiteSettings < org.eclipse.jface.wizard.Wizard
     @settingsPage
-    @data
     @defaults
-    def initialize()
-      @data = Hash.new
-    end
     def addPages()
       @settingsPage = SiteSettingsPage.new("Site Settings");
       @settingsPage.setDefaults(@defaults)
       addPage(@settingsPage)
     end
-    def performFinish()
-      return true
+    def performFinish
+      self.saveResults
+      true
     end
-    def saveResults()
-      setData('path', @settingsPage.getDrushPath)
-      setData('y', @settingsPage.getYes)
+    def saveResults
+      @data = Hash['path' => @settingsPage.getDrushPath,'yes' => @settingsPage.getYes]
     end
     def setDefaults(defaults)
       @defaults = defaults
     end
-    def setData(key, value)
-      @data[key] = value
-    end
     def getData
-      saveResults()
       @data
     end
   end
   
   class DrushSiteSettingsDialog < org.eclipse.jface.wizard.WizardDialog
-    @data
-    def finishPressed
-      @data = getWizard.getData()
-      super()
-    end
     def value
-      @data
+      getWizard().getData
     end
   end
 end

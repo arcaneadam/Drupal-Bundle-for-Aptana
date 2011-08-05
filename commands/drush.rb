@@ -15,7 +15,9 @@ with_defaults :input => :none, :output => :output_to_console, :working_directory
     cmd.output = ':discard'
     cmd.invoke do |context|
       result = DrushSettingForm::UI.settingsPage()
-      CONSOLE.puts YAML.dump(result)
+      msg = {}
+      msg[:summary] = result['path']
+      Ruble::UI.simple_notification(msg)
       return nil
       drush = drush_init()
       if !drush
