@@ -11,14 +11,7 @@ Ruble::Logger.log_level = :trace
 
 with_defaults :input => :none, :output => :output_to_console, :working_directory => :current_project do |bundle|
   command 'Execute PHP' do |cmd|
-    cmd.key_binding = "CONTROL+D"
-    cmd.output = ':discard'
     cmd.invoke do |context|
-      result = DrushSettingForm::UI.settingsPage()
-      msg = {}
-      msg[:summary] = result['path']
-      Ruble::UI.simple_notification(msg)
-      return nil
       drush = drush_init()
       if !drush
         return nil
@@ -28,11 +21,24 @@ with_defaults :input => :none, :output => :output_to_console, :working_directory
       options[:prompt] = "DO NOT USE <?php ?> tags when entering your code"
       code = DrupalUI::UI.request_string_multi(options)
       if !code || code.empty?
-      return
+        return
       end
       msg = {}
       msg[:summary] = code
       Ruble::UI.simple_notification(msg)
     end
   end
+  command 'Global Drush Settings' do |cmd|
+    cmd.key_binding = "ALT+D"
+    cmd.key_binding.mac = "CTRL+D"
+    cmd.invoke do |context|
+      result = DrushSettingForm::UI.settingsPage()
+    end
+  end
+  command 'Project Drush Settings' do |cmd|
+    cmd.invoke do |context|
+      result = DrushSettingForm::UI.settingsPage(ENV["TM_PROJECT_NAME"])
+    end
+  end
 end
+

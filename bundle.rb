@@ -618,6 +618,10 @@ END
   end
   main_menu.menu 'Drush' do |drush|
     drush.command 'Execute PHP'
+    drush.separator
+    drush.command 'Project Drush Settings'
+    drush.separator
+    drush.command 'Global Drush Settings'
   end
   main_menu.command 'Documentation for Selection (Drupal 7)'
   end

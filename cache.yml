@@ -3358,6 +3358,30 @@ children:
       displayName: Execute PHP
       path: bundle.rb
       scope: null
+    - children: *id001
+      commandName: '-'
+      customProperties: null
+      displayName: '-'
+      path: bundle.rb
+      scope: null
+    - children: *id001
+      commandName: Project Drush Settings
+      customProperties: null
+      displayName: Project Drush Settings
+      path: bundle.rb
+      scope: null
+    - children: *id001
+      commandName: '-'
+      customProperties: null
+      displayName: '-'
+      path: bundle.rb
+      scope: null
+    - children: *id001
+      commandName: Global Drush Settings
+      customProperties: null
+      displayName: Global Drush Settings
+      path: bundle.rb
+      scope: null
     commandName: Drush
     customProperties: null
     displayName: Drush
@@ -3422,10 +3446,37 @@ children:
   displayName: Execute PHP
   input: [none]
   inputPath: null
+  keyBindingMap: null
+  outputPath: null
+  outputType: output_to_console
+  path: commands/drush.rb
+  runType: current_thread
+  scope: null
+  workingDirectoryType: CURRENT_PROJECT
+- !!com.aptana.scripting.model.CommandElement
+  async: false
+  customProperties: null
+  displayName: Global Drush Settings
+  input: [none]
+  inputPath: null
   keyBindingMap:
-    !!com.aptana.scripting.model.Platform 'ALL': [CONTROL+D]
-  outputPath: /Users/adam/Documents/Aptana Rubles/drupal.ruble/:discard
-  outputType: output_to_file
+    !!com.aptana.scripting.model.Platform 'ALL': [ALT+D]
+    !!com.aptana.scripting.model.Platform 'MAC': [CTRL+D]
+  outputPath: null
+  outputType: output_to_console
+  path: commands/drush.rb
+  runType: current_thread
+  scope: null
+  workingDirectoryType: CURRENT_PROJECT
+- !!com.aptana.scripting.model.CommandElement
+  async: false
+  customProperties: null
+  displayName: Project Drush Settings
+  input: [none]
+  inputPath: null
+  keyBindingMap: null
+  outputPath: null
+  outputType: output_to_console
   path: commands/drush.rb
   runType: current_thread
   scope: null
