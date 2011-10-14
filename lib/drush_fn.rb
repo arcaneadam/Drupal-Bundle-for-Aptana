@@ -35,6 +35,11 @@ def drush_get_yaml(bundle = nil)
   if File.exists?(file)
     object = File.new(file, File::RDONLY|File::CREAT, 0755).read
     settings = YAML::load(object)
+  else
+     settings = Hash['path' => '',
+                     'yes' => FALSE,
+                     'arg' => '',
+                     'global' => true]
   end
   return settings
 end

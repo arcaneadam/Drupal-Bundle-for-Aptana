@@ -38,7 +38,15 @@ module DrushSettingForm
         elsif drush.has_key?(project.hash)
           settings = drush[project.hash]
         else
-          settings = Hash.new
+          settings = Hash['path' => '',
+                          'yes' => FALSE,
+                          'arg' => '']
+          if drush.has_key?('path') 
+            settings['path'] = drush['path'];
+          end
+          if drush.has_key?('yes') 
+            settings['yes'] = drush['yes'];
+          end
         end
         wizard = DrushSiteSettings.new
         wizard.setDefaults(settings)
@@ -111,6 +119,7 @@ module DrushSettingForm
       gridData.horizontalAlignment = org.eclipse.swt.SWT::FILL
       gridData.grabExcessHorizontalSpace = true
       @drushPath.setLayoutData(gridData)
+      @drushPath.setText(@defaults['path'])
       
       pathPicker = org.eclipse.swt.widgets.Button.new(composite, org.eclipse.swt.SWT::PUSH | org.eclipse.swt.SWT::BORDER)
       pathPicker.setText('Browse...')
@@ -120,6 +129,10 @@ module DrushSettingForm
       
       @alwaysYes = org.eclipse.swt.widgets.Button.new(composite, org.eclipse.swt.SWT::CHECK)
       @alwaysYes.setText("Always answer yes")
+      if @defaults.has_key?('yes') and @defaults['yes']
+        @alwaysYes.setSelection(TRUE)
+      end
+      
       gridData = org.eclipse.swt.layout.GridData.new()
       gridData.horizontalSpan = 2
       yesLabel = org.eclipse.swt.widgets.Label.new(composite, org.eclipse.swt.SWT::NONE)

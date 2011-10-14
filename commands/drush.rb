@@ -21,7 +21,7 @@ with_defaults :input => :none, :output => :output_to_console, :working_directory
       options[:prompt] = "DO NOT USE <?php ?> tags when entering your code"
       code = DrupalUI::UI.request_string_multi(options)
       if !code || code.empty?
-        return
+        
       end
       msg = {}
       msg[:summary] = code
@@ -33,11 +33,17 @@ with_defaults :input => :none, :output => :output_to_console, :working_directory
     cmd.key_binding.mac = "CTRL+D"
     cmd.invoke do |context|
       result = DrushSettingForm::UI.settingsPage()
+      if result
+        drush_write_yaml(result);
+      end
     end
   end
   command 'Project Drush Settings' do |cmd|
     cmd.invoke do |context|
       result = DrushSettingForm::UI.settingsPage(ENV["TM_PROJECT_NAME"])
+      if result
+        drush_write_yaml(result);
+      end
     end
   end
 end
