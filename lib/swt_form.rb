@@ -30,22 +30,22 @@ module DrushSettingForm
     class << self
       def settingsPage(project = '')
         drush = drush_get_yaml()
-        if project.empty?
-          settings = Hash['path' => drush['path'],
-                          'yes' => drush['yes'],
-                          'arg' => drush['args'],
+        if project.empty? and drush.has_key?('global')
+          settings = Hash['path' => drush['global']['path'],
+                          'yes' => drush['global']['yes'],
+                          'arg' => drush['global']['args'],
                           'global' => true]
-        elsif drush.has_key?(project.hash)
-          settings = drush[project.hash]
+        elsif drush.has_key?(project)
+          settings = drush[project]
         else
           settings = Hash['path' => '',
                           'yes' => FALSE,
                           'arg' => '']
-          if drush.has_key?('path') 
-            settings['path'] = drush['path'];
+          if drush['global'].has_key?('path') 
+            settings['path'] = drush['global']['path'];
           end
-          if drush.has_key?('yes') 
-            settings['yes'] = drush['yes'];
+          if drush['global'].has_key?('yes') 
+            settings['yes'] = drush['global']['yes'];
           end
         end
         wizard = DrushSiteSettings.new
@@ -171,7 +171,12 @@ module DrushSettingForm
       @alwaysYes.getSelection()
     end
     def getSite
-      @siteSelection.getSelection()
+      sites = @siteSelection.getSelection()
+      if sites.length > 0
+        sites[0]
+      else
+        nil
+      end
     end
     class FileListener < org.eclipse.swt.events.SelectionAdapter
       @text
@@ -179,7 +184,6 @@ module DrushSettingForm
         @text = text
       end
       def widgetSelected(e)
-        CONSOLE.puts YAML::dump(e)
         dir = @text.getText()
         path_opt = {}
         path_opt[:title] = "Please set the path to your Drush instance"
